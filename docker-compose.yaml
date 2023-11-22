@@ -1,0 +1,14 @@
+﻿services:
+  auction_db:
+    container_name: auction_db
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=postgrespw
+    volumes:
+      - auction_db:/var/lib/postgresql/data
+
+volumes:
+  auction_db:
+  
