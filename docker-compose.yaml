@@ -9,6 +9,18 @@
     volumes:
       - auction_db:/var/lib/postgresql/data
 
+  search_db:
+    container_name: search_db
+    image: mongo
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=mongopw
+    volumes:
+      - search_db:/var/lib/mongodb/data
+
 volumes:
   auction_db:
+  search_db:
   
