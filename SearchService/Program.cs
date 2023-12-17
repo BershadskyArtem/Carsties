@@ -1,6 +1,9 @@
 using System.Net;
+using Contracts;
+using MassTransit;
 using Polly;
 using Polly.Extensions.Http;
+using SearchService.Consumers;
 using SearchService.Data;
 using SearchService.Services;
 
@@ -11,9 +14,46 @@ builder.Services
     .AddHttpClient<AuctionServiceHttpClient>()
     .AddPolicyHandler(GetPolicy());
 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddMassTransit(conf =>
+{
+    //IRegistrationConfigurator
+    conf.AddConsumersFromNamespaceContaining<AuctionCreatedConsumer>();
+
+    conf.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("search", false));
+
+    conf.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.ReceiveEndpoint("search-auction-updated", e =>
+        {
+            e.UseMessageRetry(r => 
+                r.Incremental(5, TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(5)));
+            e.ConfigureConsumer<AuctionUpdatedConsumer>(context);
+        });
+
+        cfg.ReceiveEndpoint("search-auction-deleted", e =>
+        {
+            e.UseMessageRetry(r => 
+                r.Incremental(5, TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(5)));
+            e.ConfigureConsumer<AuctionDeletedConsumer>(context);
+        });
+        
+        cfg.ReceiveEndpoint("search-auction-created",
+            e =>
+            {
+                e.UseMessageRetry(r =>
+                    r.Interval(5, TimeSpan.FromSeconds(5)));
+                e.ConfigureConsumer<AuctionCreatedConsumer>(context);
+            });
+
+        cfg.ConfigureEndpoints(context);
+    });
+});
+
 var app = builder.Build();
 
-app.Lifetime.ApplicationStarted.Register(async Task () =>
+app.Lifetime.ApplicationStarted.Register(async () =>
 {
     try
     {

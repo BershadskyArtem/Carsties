@@ -4,6 +4,8 @@ using AuctionService.DTOs;
 using AuctionService.Entities;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Contracts;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,11 +17,16 @@ public class AuctionsController : ControllerBase
 {
     private readonly IMapper _mapper;
     private readonly AuctionDbContext _context;
+    private readonly IPublishEndpoint _publishEndpoint;
 
-    public AuctionsController(IMapper mapper, AuctionDbContext context)
+    public AuctionsController(
+        IMapper mapper,
+        AuctionDbContext context,
+        IPublishEndpoint publishEndpoint)
     {
         _mapper = mapper;
         _context = context;
+        _publishEndpoint = publishEndpoint;
     }
 
     [HttpGet]
@@ -58,12 +65,21 @@ public class AuctionsController : ControllerBase
         var auction = _mapper.Map<Auction>(auctionDto);
         auction.Seller = "test";
         await _context.Auctions.AddAsync(auction);
+        
+        var outputAuction = _mapper.Map<AuctionDto>(auction);
+
+        //You can move this up because outbox pattern is now embedded inside AuctionDbContext
+        var auctionCreatedEvent = _mapper.Map<AuctionCreated>(outputAuction);
+        //Publish saves event in EF Core. Using outbox config in Program.cs
+        await _publishEndpoint.Publish(auctionCreatedEvent);
+        
         var result = await _context.SaveChangesAsync() > 0;
 
         if (!result)
             return BadRequest("Could not save changes to the DB");
 
-        var outputAuction = _mapper.Map<AuctionDto>(auction);
+        
+        
         //Name of endpoint, then goes arguments of the endpoint method and then created value.
         return CreatedAtAction(nameof(GetAuctionById), new { auction.Id }, outputAuction);
     }
@@ -78,13 +94,20 @@ public class AuctionsController : ControllerBase
 
         if (auction is null)
             return NotFound();
-
+        
         auction.Item.Make = updateAuctionDto.Make ?? auction.Item.Make;
         auction.Item.Color = updateAuctionDto.Color ?? auction.Item.Color;
         auction.Item.Mileage = updateAuctionDto.Mileage ?? auction.Item.Mileage;
         auction.Item.Model = updateAuctionDto.Model ?? auction.Item.Model;
         auction.Item.Year = updateAuctionDto.Year ?? auction.Item.Year;
 
+        //var auctionUpdatedEvent = _mapper.Map<AuctionUpdated>(auction.Item);
+        //auctionUpdatedEvent.Id = auction.Id.ToString();
+
+        var auctionUpdatedEvent = _mapper.Map<AuctionUpdated>(auction);
+        
+        await _publishEndpoint.Publish<AuctionUpdated>(auctionUpdatedEvent);
+        
         var result = await _context.SaveChangesAsync() > 0;
 
         if (result)
@@ -101,6 +124,13 @@ public class AuctionsController : ControllerBase
             return Ok();
 
         _context.Auctions.Remove(auction);
+
+        var auctionDeleted = new AuctionDeleted()
+        {
+            Id = id.ToString()
+        };
+
+        await _publishEndpoint.Publish<AuctionDeleted>(auctionDeleted);
 
         var result = await _context.SaveChangesAsync() > 0;
 
