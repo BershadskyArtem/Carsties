@@ -1,6 +1,6 @@
-﻿namespace AuctionService.DTOs;
+﻿namespace Contracts;
 
-public class AuctionDto
+public class AuctionCreated
 {
     public Guid Id { get; set; }
     public int ReservePrice { get; set; } = 0;
@@ -12,6 +12,7 @@ public class AuctionDto
     public DateTime UpdatedAt { get; set; }
     public DateTime AuctionEnd { get; set; }
     public string Status { get; set; } = default!;
+    
     public string Make { get; set; } = default!;
     public string Model { get; set; } = default!;
     public int Year { get; set; }
