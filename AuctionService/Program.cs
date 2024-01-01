@@ -30,7 +30,15 @@ builder.Services.AddMassTransit(conf =>
 
     conf.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("auction", false));
 
-    conf.UsingRabbitMq((context, cfg) => { cfg.ConfigureEndpoints(context); });
+    conf.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host(builder.Configuration["RabbitMQ:Host"], "/", p =>
+        {
+            p.Username(builder.Configuration["RabbitMQ:Username"]);
+            p.Password(builder.Configuration["RabbitMQ:Password"]);
+        });
+        cfg.ConfigureEndpoints(context);
+    });
 });
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -57,6 +65,5 @@ catch (Exception e)
 {
     Console.WriteLine(e);
 }
-
 
 app.Run();
