@@ -14,6 +14,21 @@
     ports:
       - 7001:80
   
+  search_svc:
+    container_name: search_svc_name
+    build:
+      dockerfile: SearchService/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - RabbitMQ__Host=rabbitmq_name
+      - RabbitMQ__Username=guest
+      - RabbitMQ__Host=guest
+      - ConnectionStrings__MongoDbConnection=mongodb://root:mongopw@search_db_name
+      - AuctionServiceUrl=http://auction_svc_name
+    ports:
+      - 7002:80
+  
   auction_db:
     container_name: auction_db_name
     image: postgres
