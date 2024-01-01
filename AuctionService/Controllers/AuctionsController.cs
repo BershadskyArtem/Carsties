@@ -81,6 +81,11 @@ public class AuctionsController : ControllerBase
         var auctionCreatedEvent = _mapper.Map<AuctionCreated>(outputAuction);
         //Publish saves event in EF Core. Using outbox config in Program.cs
         await _publishEndpoint.Publish(auctionCreatedEvent);
+        //I add following code to test my theories about Mass Transit.
+        await _publishEndpoint.Publish(new TestingContract()
+        {
+            Message = Guid.NewGuid().ToString()
+        });
         
         var result = await _context.SaveChangesAsync() > 0;
 
