@@ -1,4 +1,13 @@
-﻿services:
+﻿# I added this file using explorer and named it docker-compose.yaml
+# *.yaml extension does not seem to be supported by rider or vs. So i changed extension to *.yml .  
+# Then i opened vs and added "container orchestration support" and it used this file automatically.
+# If you encounter issues such as "service does not have an image or context" that means that you need to 
+# delete .vs, obj and bin folders. Also i deleted .idea folder to make sure that everything works. 
+# Rider 2023.1 Visual Studio 2022. (02.01.2024)
+
+version: "3.8"
+
+services:
   auction_svc:
     container_name: auction_svc_name
     build:

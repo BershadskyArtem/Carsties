@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "auction_svc": "StartDebugging",
+        "identity_svc": "StartDebugging",
+        "search_svc": "StartDebugging"
+      }
+    }
+  }
+}
