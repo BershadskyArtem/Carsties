@@ -14,8 +14,10 @@ public class BidPlacedConsumer : IConsumer<BidPlaced>
         var biddenAuction = await DB.Find<Item>().OneAsync(message.AuctionId);
 
         if (biddenAuction is null)
-            throw new NullReferenceException(nameof(biddenAuction));
-        
+        {
+            throw new ArgumentNullException(nameof(biddenAuction));
+        }
+
         if (message.BidStatus.Contains("Accepted") 
             && message.Amount > biddenAuction.CurrentHighBid)
         {

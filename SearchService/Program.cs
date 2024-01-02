@@ -1,5 +1,4 @@
 using System.Net;
-using Contracts;
 using MassTransit;
 using Polly;
 using Polly.Extensions.Http;
@@ -25,6 +24,12 @@ builder.Services.AddMassTransit(conf =>
 
     conf.UsingRabbitMq((context, cfg) =>
     {
+        cfg.Host(builder.Configuration["RabbitMQ:Host"], "/", p =>
+        {
+            p.Username(builder.Configuration["RabbitMQ:Username"]);
+            p.Password(builder.Configuration["RabbitMQ:Password"]);
+        });
+        
         cfg.ReceiveEndpoint("search-auction-updated", e =>
         {
             e.UseMessageRetry(r => 
@@ -39,7 +44,8 @@ builder.Services.AddMassTransit(conf =>
             e.ConfigureConsumer<AuctionDeletedConsumer>(context);
         });
         
-        cfg.ReceiveEndpoint("search-auction-created",
+        cfg.ReceiveEndpoint(
+            "search-auction-created",
             e =>
             {
                 e.UseMessageRetry(r =>

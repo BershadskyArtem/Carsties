@@ -17,13 +17,22 @@ public class AuctionCreatedConsumer : IConsumer<AuctionCreated>
     
     public async Task Consume(ConsumeContext<AuctionCreated> context)
     {
+        var message = context.Message;
+        
+        if (message is null)
+        {
+            throw new ArgumentNullException(nameof(context.Message));
+        }
+        
         Console.WriteLine($"-----> Consuming Auction Created Event: {context.Message.Id}");
      
-        var item = _mapper.Map<Item>(context.Message);
+        var item = _mapper.Map<Item>(message);
 
         if (item.Model == "Foo")
+        {
             throw new ArgumentException(nameof(item.Model));
-        
+        }
+
         await item.SaveAsync();
     }
 }

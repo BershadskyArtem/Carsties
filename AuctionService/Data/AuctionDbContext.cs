@@ -6,11 +6,13 @@ namespace AuctionService.Data;
 
 public class AuctionDbContext : DbContext
 {
-    public AuctionDbContext(DbContextOptions<AuctionDbContext> options) : base(options)
+    public AuctionDbContext(DbContextOptions<AuctionDbContext> options)
+        : base(options)
     {
     }
 
     public DbSet<Auction> Auctions { get; set; } = null!;
+    
     public DbSet<Item> Items { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

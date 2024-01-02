@@ -14,7 +14,7 @@ public class AuctionDeletedFaultConsumer : IConsumer<Fault<AuctionDeleted>>
 
     public Task Consume(ConsumeContext<Fault<AuctionDeleted>> context)
     {
-        _logger.LogError($"Error while deleting entity with Id: {context.Message.Message.Id}");
+        _logger.LogError("Error while deleting entity with Id: {DeletedId}", context.Message.Message.Id);
         return Task.CompletedTask;
     }
 }

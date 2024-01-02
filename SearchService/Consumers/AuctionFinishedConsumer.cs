@@ -14,21 +14,27 @@ public class AuctionFinishedConsumer : IConsumer<AuctionFinished>
         var finishedAuction = await DB.Find<Item>().OneAsync(message.AuctionId);
 
         if (finishedAuction is null)
-            throw new NullReferenceException(nameof(finishedAuction));
+        {
+            throw new ArgumentNullException(nameof(finishedAuction));
+        }
 
         if (message.ItemSold)
         {
             if (message.Winner is null)
-                throw new NullReferenceException(nameof(message.Winner));
+            {
+                throw new ArgumentNullException(nameof(message.Winner));
+            }
 
             if (message.Amount is null)
-                throw new NullReferenceException(nameof(message.Amount));
-            
+            {
+                throw new ArgumentNullException(nameof(message.Amount));
+            }
+
             finishedAuction.Winner = message.Winner;
             finishedAuction.SoldAmount = (int)message.Amount;
         }
 
-        //TODO:Replace hardcoded string value.
+        // TODO:Replace hardcoded string value.
         finishedAuction.Status = "Finished";
 
         await finishedAuction.SaveAsync();

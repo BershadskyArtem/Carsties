@@ -66,8 +66,10 @@ public static class Config
                 {
                     "http://localhost:3000/api/auth/callback/id-server"
                 },
+
                 // Enabling refresh token support in here.
                 AllowOfflineAccess = true,
+
                 // Changing access token lifetime from 3600 seconds to month.
                 AccessTokenLifetime = 3600 * 24 * 30
             }
