@@ -4,6 +4,7 @@ using IdentityService.Models;
 using IdentityService.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Serilog;
 
 namespace IdentityService;
@@ -40,11 +41,8 @@ internal static class HostingExtensions
             .AddProfileService<CustomProfileService>();
 
 
-        builder.Services.ConfigureApplicationCookie(options =>
-        {
-            options.Cookie.SameSite = SameSiteMode.Lax;
-        });
-        
+        builder.Services.ConfigureApplicationCookie(options => { options.Cookie.SameSite = SameSiteMode.Lax; });
+
         builder.Services.AddAuthentication()
             .AddGoogle(options =>
             {
@@ -69,7 +67,13 @@ internal static class HostingExtensions
             app.UseDeveloperExceptionPage();
         }
 
-        app.UseStaticFiles();
+        app.UseStaticFiles(new StaticFileOptions()
+        {
+            FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(),
+                "wwwroot")),
+            RequestPath = new PathString("")
+        });
+        
         app.UseRouting();
         app.UseIdentityServer();
         app.UseAuthorization();
