@@ -16,11 +16,13 @@ public static class DbInitializer
         dbContext.Database.Migrate();
 
         if (dbContext.Auctions.Any())
+        {
             return;
+        }
 
         var auctions = new List<Auction>()
         {
-            	    // 1 Ford GT
+            // 1 Ford GT
             new Auction
             {
                 Id = Guid.Parse("afbee524-5972-4075-8800-7d1f9d7b0a0c"),
@@ -38,6 +40,7 @@ public static class DbInitializer
                     ImageUrl = "https://cdn.pixabay.com/photo/2016/05/06/16/32/car-1376190_960_720.jpg"
                 }
             },
+
             // 2 Bugatti Veyron
             new Auction
             {
@@ -56,6 +59,7 @@ public static class DbInitializer
                     ImageUrl = "https://cdn.pixabay.com/photo/2012/05/29/00/43/car-49278_960_720.jpg"
                 }
             },
+
             // 3 Ford mustang
             new Auction
             {
@@ -73,6 +77,7 @@ public static class DbInitializer
                     ImageUrl = "https://cdn.pixabay.com/photo/2012/11/02/13/02/car-63930_960_720.jpg"
                 }
             },
+
             // 4 Mercedes SLK
             new Auction
             {
@@ -91,6 +96,7 @@ public static class DbInitializer
                     ImageUrl = "https://cdn.pixabay.com/photo/2016/04/17/22/10/mercedes-benz-1335674_960_720.png"
                 }
             },
+
             // 5 BMW X1
             new Auction
             {
@@ -109,6 +115,7 @@ public static class DbInitializer
                     ImageUrl = "https://cdn.pixabay.com/photo/2017/08/31/05/47/bmw-2699538_960_720.jpg"
                 }
             },
+
             // 6 Ferrari spider
             new Auction
             {
@@ -127,6 +134,7 @@ public static class DbInitializer
                     ImageUrl = "https://cdn.pixabay.com/photo/2017/11/09/01/49/ferrari-458-spider-2932191_960_720.jpg"
                 }
             },
+
             // 7 Ferrari F-430
             new Auction
             {
@@ -145,6 +153,7 @@ public static class DbInitializer
                     ImageUrl = "https://cdn.pixabay.com/photo/2017/11/08/14/39/ferrari-f430-2930661_960_720.jpg"
                 }
             },
+
             // 8 Audi R8
             new Auction
             {
@@ -162,6 +171,7 @@ public static class DbInitializer
                     ImageUrl = "https://cdn.pixabay.com/photo/2019/12/26/20/50/audi-r8-4721217_960_720.jpg"
                 }
             },
+
             // 9 Audi TT
             new Auction
             {
@@ -180,6 +190,7 @@ public static class DbInitializer
                     ImageUrl = "https://cdn.pixabay.com/photo/2016/09/01/15/06/audi-1636320_960_720.jpg"
                 }
             },
+
             // 10 Ford Model T
             new Auction
             {

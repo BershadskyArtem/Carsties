@@ -14,7 +14,7 @@ public class AuctionUpdatedFaultConsumer : IConsumer<Fault<AuctionUpdated>>
 
     public Task Consume(ConsumeContext<Fault<AuctionUpdated>> context)
     {
-        _logger.LogError($"Fault while updating auction. Id: {context.Message.Message.Id}");
+        _logger.LogError("Fault while updating auction. Id: {UpdatedId}", context.Message.Message.Id);
         return Task.CompletedTask;
     }
 }

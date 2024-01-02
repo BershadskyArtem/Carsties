@@ -46,7 +46,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     {
         options.Authority = builder.Configuration["IdentityServiceUrl"];
         options.RequireHttpsMetadata = false;
+#pragma warning disable CA5404
         options.TokenValidationParameters.ValidateAudience = false;
+#pragma warning restore CA5404
         options.TokenValidationParameters.NameClaimType = "username";
     });
 

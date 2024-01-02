@@ -1,0 +1,218 @@
+# Docs 
+# https://learn.microsoft.com/en-us/visualstudio/code-quality/use-roslyn-analyzers?view=vs-2022
+# https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/Configuration.md
+# 
+
+[*]
+charset = utf-8-bom
+end_of_line = crlf
+trim_trailing_whitespace = false
+insert_final_newline = false
+indent_style = space
+indent_size = 4
+
+# Microsoft .NET properties
+csharp_new_line_before_members_in_object_initializers = false
+csharp_preferred_modifier_order = public, private, protected, internal, file, new, static, abstract, virtual, sealed, readonly, override, extern, unsafe, volatile, async, required:suggestion
+csharp_style_prefer_utf8_string_literals = true:suggestion
+csharp_style_var_elsewhere = true:suggestion
+csharp_style_var_for_built_in_types = true:suggestion
+csharp_style_var_when_type_is_apparent = true:suggestion
+dotnet_naming_rule.unity_serialized_field_rule.import_to_resharper = True
+dotnet_naming_rule.unity_serialized_field_rule.resharper_description = Unity serialized field
+dotnet_naming_rule.unity_serialized_field_rule.resharper_guid = 5f0fdb63-c892-4d2c-9324-15c80b22a7ef
+dotnet_naming_rule.unity_serialized_field_rule.severity = warning
+dotnet_naming_rule.unity_serialized_field_rule.style = lower_camel_case_style
+dotnet_naming_rule.unity_serialized_field_rule.symbols = unity_serialized_field_symbols
+dotnet_naming_style.lower_camel_case_style.capitalization = camel_case
+dotnet_naming_symbols.unity_serialized_field_symbols.applicable_accessibilities = *
+dotnet_naming_symbols.unity_serialized_field_symbols.applicable_kinds = 
+dotnet_naming_symbols.unity_serialized_field_symbols.resharper_applicable_kinds = unity_serialised_field
+dotnet_naming_symbols.unity_serialized_field_symbols.resharper_required_modifiers = instance
+dotnet_style_parentheses_in_arithmetic_binary_operators = never_if_unnecessary:none
+dotnet_style_parentheses_in_other_binary_operators = always_for_clarity:none
+dotnet_style_parentheses_in_relational_binary_operators = never_if_unnecessary:none
+dotnet_style_predefined_type_for_locals_parameters_members = true:suggestion
+dotnet_style_predefined_type_for_member_access = true:suggestion
+dotnet_style_qualification_for_event = false:suggestion
+dotnet_style_qualification_for_field = false:suggestion
+dotnet_style_qualification_for_method = false:suggestion
+dotnet_style_qualification_for_property = false:suggestion
+dotnet_style_require_accessibility_modifiers = for_non_interface_members:suggestion
+
+# ReSharper properties
+resharper_autodetect_indent_settings = true
+resharper_formatter_off_tag = @formatter:off
+resharper_formatter_on_tag = @formatter:on
+resharper_formatter_tags_enabled = true
+resharper_use_indent_from_vs = false
+
+# ReSharper inspection severities
+resharper_arrange_redundant_parentheses_highlighting = hint
+resharper_arrange_this_qualifier_highlighting = hint
+resharper_arrange_type_member_modifiers_highlighting = hint
+resharper_arrange_type_modifiers_highlighting = hint
+resharper_built_in_type_reference_style_for_member_access_highlighting = hint
+resharper_built_in_type_reference_style_highlighting = hint
+resharper_redundant_base_qualifier_highlighting = warning
+resharper_suggest_var_or_type_built_in_types_highlighting = hint
+resharper_suggest_var_or_type_elsewhere_highlighting = hint
+resharper_suggest_var_or_type_simple_types_highlighting = hint
+resharper_web_config_module_not_resolved_highlighting = warning
+resharper_web_config_type_not_resolved_highlighting = warning
+resharper_web_config_wrong_module_highlighting = warning
+
+[{*.har,*.jsb2,*.jsb3,*.json,.babelrc,.eslintrc,.stylelintrc,bowerrc,jest.config}]
+indent_style = space
+indent_size = 2
+
+[{*.yaml,*.yml}]
+indent_style = space
+indent_size = 2
+
+[{*.bash,*.sh,*.zsh}]
+indent_style = space
+indent_size = 2
+
+[*.less]
+indent_style = space
+indent_size = 2
+
+[*.scss]
+indent_style = space
+indent_size = 2
+
+[*.js.map]
+indent_style = space
+indent_size = 2
+
+[*.{appxmanifest,asax,ascx,aspx,axaml,build,c,c++,cc,cginc,compute,cp,cpp,cs,cshtml,cu,cuh,cxx,dtd,fs,fsi,fsscript,fsx,fx,fxh,h,hh,hlsl,hlsli,hlslinc,hpp,hxx,inc,inl,ino,ipp,ixx,master,ml,mli,mpp,mq4,mq5,mqh,nuspec,paml,razor,resw,resx,shader,skin,tpp,usf,ush,vb,xaml,xamlx,xoml,xsd}]
+indent_style = space
+indent_size = 4
+tab_width = 4
+
+#dotnet StyleCop settings
+# Using directive should appear within a namespace declaration
+dotnet_diagnostic.SA1200.severity = None
+
+# XML comment analysis is disabled due to project configuration
+dotnet_diagnostic.SA0001.severity = None
+
+# The file header is missing or not located at the top of the file
+dotnet_diagnostic.SA1633.severity = None
+
+# Use string.Empty for empty strings
+dotnet_diagnostic.SA1122.severity = None
+
+# Variable '_' should begin with lower-case letter
+dotnet_diagnostic.SA1312.severity = None
+
+# Parameter '_' should begin with lower-case letter
+dotnet_diagnostic.SA1313.severity = None
+
+# Elements should be documented
+dotnet_diagnostic.SA1600.severity = None
+
+# Prefix local calls with this
+dotnet_diagnostic.SA1101.severity = None
+
+# 'public' members should come before 'private' members
+dotnet_diagnostic.SA1202.severity = None
+
+# Comments should contain text
+dotnet_diagnostic.SA1120.severity = None
+
+# Constant fields should appear before non-constant fields
+dotnet_diagnostic.SA1203.severity = None
+
+# Field '_blah' should not begin with an underscore
+dotnet_diagnostic.SA1309.severity = None
+
+# Use trailing comma in multi-line initializers
+dotnet_diagnostic.SA1413.severity = None
+
+# A method should not follow a class
+dotnet_diagnostic.SA1201.severity = None
+
+# Elements should be separated by blank line
+dotnet_diagnostic.SA1516.severity = None
+
+# The parameter spans multiple lines
+dotnet_diagnostic.SA1118.severity = None
+
+# Static members should appear before non-static members
+dotnet_diagnostic.SA1204.severity = None
+
+# Put constructor initializers on their own line
+dotnet_diagnostic.SA1128.severity = None
+
+# Opening braces should not be preceded by blank line
+dotnet_diagnostic.SA1509.severity = None
+
+# The parameter should begin on the line after the previous parameter
+dotnet_diagnostic.SA1115.severity = None
+
+# File name should match first type name
+dotnet_diagnostic.SA1649.severity = None
+
+# File may only contain a single type
+dotnet_diagnostic.SA1402.severity = None
+
+# Enumeration items should be documented
+dotnet_diagnostic.SA1602.severity = None
+
+# Element should not be on a single line
+dotnet_diagnostic.SA1502.severity = None
+
+# Closing parenthesis should not be preceded by a space
+dotnet_diagnostic.SA1009.severity = None
+
+# Closing parenthesis should be on line of last parameter
+dotnet_diagnostic.SA1111.severity = None
+
+# Braces should not be ommitted
+dotnet_diagnostic.SA1503.severity = None
+
+# Change string to URI
+dotnet_diagnostic.CA1056.severity = None
+
+# Be or not to be line after property
+dotnet_diagnostic.SA1028.severity = None
+
+# SA1210: Using directives should be ordered alphabetically by the namespace
+dotnet_diagnostic.SA1210.severity = None
+
+# SA1512: Single-line comments should not be followed by blank line
+dotnet_diagnostic.SA1512.severity = None
+
+# SA1518: File may not end with a newline characte
+dotnet_diagnostic.SA1518.severity = None
+
+# CA2208: Метод Consume передает "finishedAuction" в качестве аргумента paramName в конструктор ArgumentNullException. Замените этот аргумент одним из имен параметров метода. Заметьте, что предоставленное имя параметра должно использовать те же прописные и строчные буквы, как объявлено в методе
+dotnet_diagnostic.CA2208.severity = None
+
+# CA1062 (if not nullable then we do not need it): В видимом извне методе перед использованием параметра нужно убедиться, что его значение отличается от NULL. При необходимости следует вызвать исключение ArgumentNullException.
+dotnet_diagnostic.CA1062.severity = None
+# CA2007: Mandatory ConfigureAwait
+dotnet_diagnostic.CA2007.severity = None
+# CA1303: Use resources instead of strings
+dotnet_diagnostic.CA1303.severity = None
+
+# SA1122: Use string.empty
+dotnet_diagnostic.SA1122.severity = suggestion
+# CA1848: Use LoggerMessage
+dotnet_diagnostic.CA1848.severity = suggestion
+# CA1307: always specify clusture in string.contains
+dotnet_diagnostic.CA1307.severity = suggestion
+# SA1408: Conditional expressions should declare precedence.
+dotnet_diagnostic.SA1408.severity = suggestion
+# CA1305: Поведение "DateTime.Parse(string)"
+dotnet_diagnostic.CA1305.severity = suggestion
+# CA1031: Do not catch general exceptions (i.e. typeof(Exception))
+dotnet_diagnostic.CA1031.severity = suggestion
+# SA1515: Single-line comment should be preceded by blank lin
+dotnet_diagnostic.SA1515.severity = suggestion
+# SA1005: Single line comment should be with one space.
+dotnet_diagnostic.SA1005.severity = suggestion
+# SA1507: Redundant new lines
+dotnet_diagnostic.SA1507.severity = suggestion

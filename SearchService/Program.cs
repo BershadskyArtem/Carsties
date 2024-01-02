@@ -1,5 +1,4 @@
 using System.Net;
-using Contracts;
 using MassTransit;
 using Polly;
 using Polly.Extensions.Http;
@@ -45,7 +44,8 @@ builder.Services.AddMassTransit(conf =>
             e.ConfigureConsumer<AuctionDeletedConsumer>(context);
         });
         
-        cfg.ReceiveEndpoint("search-auction-created",
+        cfg.ReceiveEndpoint(
+            "search-auction-created",
             e =>
             {
                 e.UseMessageRetry(r =>

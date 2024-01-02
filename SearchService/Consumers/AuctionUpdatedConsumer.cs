@@ -32,7 +32,6 @@ public class AuctionUpdatedConsumer : IConsumer<AuctionUpdated>
          * .ExecuteAsync()
          * 
          */
-        
 
         var update = DB.Update<Item>()
             .MatchID(updatedAuction.Id)

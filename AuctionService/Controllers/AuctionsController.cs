@@ -1,13 +1,13 @@
-﻿using AuctionService.Data;
-using AuctionService.DTOs;
-using AuctionService.Entities;
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using Contracts;
-using MassTransit;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using MassTransit;
+using Contracts;
+using AuctionService.Data;
+using AuctionService.DTOs;
+using AuctionService.Entities;
 
 namespace AuctionService.Controllers;
 
@@ -54,7 +54,9 @@ public class AuctionsController : ControllerBase
             .FirstOrDefaultAsync(x => x.Id == id);
 
         if (auction is null)
+        {
             return NotFound();
+        }
 
         return _mapper.Map<AuctionDto>(auction);
     }
@@ -64,7 +66,7 @@ public class AuctionsController : ControllerBase
     public async Task<ActionResult<AuctionDto>> CreateAuction(CreateAuctionDto auctionDto)
     {
         var auction = _mapper.Map<Auction>(auctionDto);
-        
+
         if (User.Identity is not null && User.Identity.Name is not null)
         {
             auction.Seller = User.Identity.Name;
@@ -73,32 +75,34 @@ public class AuctionsController : ControllerBase
         {
             return Forbid();
         }
+
         await _context.Auctions.AddAsync(auction);
-        
+
         var outputAuction = _mapper.Map<AuctionDto>(auction);
 
-        //You can move this up because outbox pattern is now embedded inside AuctionDbContext
+        // You can move this up because outbox pattern is now embedded inside AuctionDbContext
         var auctionCreatedEvent = _mapper.Map<AuctionCreated>(outputAuction);
-        //Publish saves event in EF Core. Using outbox config in Program.cs
+
+        // Publish saves event in EF Core. Using outbox config in Program.cs
         await _publishEndpoint.Publish(auctionCreatedEvent);
-        //I add following code to test my theories about Mass Transit.
+
+        // I add following code to test my theories about Mass Transit.
         await _publishEndpoint.Publish(new TestingContract()
         {
-            Message = Guid.NewGuid().ToString()
+            Message = Guid.NewGuid().ToString(),
         });
-        
+
         var result = await _context.SaveChangesAsync() > 0;
 
         if (!result)
+        {
             return BadRequest("Could not save changes to the DB");
+        }
 
-        
-        
-        //Name of endpoint, then goes arguments of the endpoint method and then created value.
+        // Name of endpoint, then goes arguments of the endpoint method and then created value.
         return CreatedAtAction(nameof(GetAuctionById), new { auction.Id }, outputAuction);
     }
 
-    
     [Authorize]
     [HttpPut("{id}")]
     public async Task<ActionResult> UpdateAuction([FromRoute] Guid id, UpdateAuctionDto updateAuctionDto)
@@ -109,29 +113,34 @@ public class AuctionsController : ControllerBase
             .FirstOrDefaultAsync(a => a.Id == id);
 
         if (auction is null)
+        {
             return NotFound();
-
+        }
 
         if (auction.Seller != User.Identity?.Name)
+        {
             return Forbid();
-        
+        }
+
         auction.Item.Make = updateAuctionDto.Make ?? auction.Item.Make;
         auction.Item.Color = updateAuctionDto.Color ?? auction.Item.Color;
         auction.Item.Mileage = updateAuctionDto.Mileage ?? auction.Item.Mileage;
         auction.Item.Model = updateAuctionDto.Model ?? auction.Item.Model;
         auction.Item.Year = updateAuctionDto.Year ?? auction.Item.Year;
 
-        //var auctionUpdatedEvent = _mapper.Map<AuctionUpdated>(auction.Item);
-        //auctionUpdatedEvent.Id = auction.Id.ToString();
+        // var auctionUpdatedEvent = _mapper.Map<AuctionUpdated>(auction.Item);
+        // auctionUpdatedEvent.Id = auction.Id.ToString();
 
         var auctionUpdatedEvent = _mapper.Map<AuctionUpdated>(auction);
-        
+
         await _publishEndpoint.Publish<AuctionUpdated>(auctionUpdatedEvent);
-        
+
         var result = await _context.SaveChangesAsync() > 0;
 
         if (result)
+        {
             return Ok();
+        }
 
         return BadRequest("Could not save changes.");
     }
@@ -142,18 +151,20 @@ public class AuctionsController : ControllerBase
     {
         var auction = await _context.Auctions.FirstOrDefaultAsync(a => a.Id == id);
         if (auction is null)
+        {
             return Ok();
+        }
 
         if (auction.Seller != User.Identity?.Name)
         {
             return Forbid();
         }
-        
+
         _context.Auctions.Remove(auction);
 
         var auctionDeleted = new AuctionDeleted()
         {
-            Id = id.ToString()
+            Id = id.ToString(),
         };
 
         await _publishEndpoint.Publish<AuctionDeleted>(auctionDeleted);
@@ -161,7 +172,9 @@ public class AuctionsController : ControllerBase
         var result = await _context.SaveChangesAsync() > 0;
 
         if (!result)
+        {
             return BadRequest("Could not update DB");
+        }
 
         return Ok();
     }
