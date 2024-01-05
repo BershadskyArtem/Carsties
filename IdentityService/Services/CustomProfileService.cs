@@ -21,7 +21,7 @@ public class CustomProfileService : IProfileService
         var user = await _userManager.GetUserAsync(context.Subject);
 
         if (user is null)
-            throw new NullReferenceException(nameof(user));
+            throw new ArgumentNullException(nameof(user));
         
         var existingClaims = await _userManager.GetClaimsAsync(user);
         var claims = new List<Claim>()
