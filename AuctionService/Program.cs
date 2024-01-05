@@ -2,12 +2,16 @@ using AuctionService.Consumers;
 using Microsoft.EntityFrameworkCore;
 using MassTransit;
 using AuctionService.Data;
+using AuctionService.Data.Abstractions;
+using AuctionService.Data.Implementations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+
+builder.Services.AddScoped<IAuctionRepository, AuctionRepository>();
 
 builder.Services.AddDbContext<AuctionDbContext>((isp, config) =>
 {
@@ -69,3 +73,7 @@ catch (Exception e)
 }
 
 app.Run();
+
+public partial class Program
+{
+}

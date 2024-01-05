@@ -12,9 +12,10 @@ namespace IdentityService.Pages.Account.Register;
 [AllowAnonymous]
 public class Index : PageModel
 {
-    [BindProperty] public RegisterViewModel Input { get; set; }
-    [BindProperty] public bool RegisterSuccess { get; set; }
-
+    [BindProperty] 
+    public RegisterViewModel Input { get; set; }
+    [BindProperty] 
+    public bool RegisterSuccess { get; set; }
     
     private readonly UserManager<ApplicationUser> _userManager;
 
@@ -22,7 +23,6 @@ public class Index : PageModel
     {
         _userManager = userManager;
     }
-
     
     public IActionResult OnGet(string returnUrl)
     {
