@@ -69,9 +69,10 @@ public static class Config
 
                 // Enabling refresh token support in here.
                 AllowOfflineAccess = true,
-
+                
                 // Changing access token lifetime from 3600 seconds to month.
-                AccessTokenLifetime = 3600 * 24 * 30
+                AccessTokenLifetime = 3600 * 24 * 30,
+                AlwaysIncludeUserClaimsInIdToken = true
             }
         };
 }
