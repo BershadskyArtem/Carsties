@@ -8,7 +8,14 @@ type State = {
     searchValue : string;
     orderBy : string;
     filterBy : string;
+    auction : Auction;
 }
+
+type Auction = {
+    seller? : string;
+    winner? : string;
+}
+
 
 type Actions = {
     setParams: (params: Partial<State>) => void;
@@ -24,7 +31,11 @@ const initialState : State = {
     searchTerm : '',
     searchValue: '',
     orderBy : 'make',
-    filterBy : ''
+    filterBy : '',
+    auction : {
+        seller : undefined,
+        winner : undefined
+    }
 }
 
 /*

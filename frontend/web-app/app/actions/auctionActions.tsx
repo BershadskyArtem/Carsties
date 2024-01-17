@@ -1,14 +1,28 @@
 'use server'
 
+import { fetchWrapper } from "@/lib/FetchWrapper";
 import { Auction, PagedResult } from "@/types";
+import { revalidatePath } from "next/cache";
+import { FieldValues } from "react-hook-form";
 
 export async function GetData(url: string) : Promise<PagedResult<Auction>> {
-    
-    const res = await fetch(`http://localhost:6001/search${url}&filterBy=finished`);
+    return await fetchWrapper.Get(`search${url}`);
+}
 
-    if(!res.ok){
-      throw new Error("Failed to search for auctions.");
-    }
-  
-    return res.json();
+export async function CreateAuction(data : FieldValues){
+  return await fetchWrapper.Post('auctions', data);
+}
+
+export async function GetDetailedAuction(id : string): Promise<Auction>{
+  return await fetchWrapper.Get(`auctions/${id}`);
+}
+
+export async function UpdateAuction(data : FieldValues, id : string) {
+  const result = await fetchWrapper.Put(`auctions/${id}`, data);
+  revalidatePath(`/auctions/${id}`);
+  return result;
+}
+
+export async function DeleteAuction(id : string){
+  return await fetchWrapper.Del(`auctions/${id}`);
 }

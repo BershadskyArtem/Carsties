@@ -30,7 +30,8 @@ export default function Listings() {
         pageSize : state.pageSize,
         searchTerm : state.searchTerm,
         orderBy : state.orderBy,
-        filterBy : state.filterBy
+        filterBy : state.filterBy,
+        auction : state.auction
     }), shallow);
 
     const setParams = useParamsStore(state => state.setParams);
@@ -41,7 +42,15 @@ export default function Listings() {
 
     const url = queryString.stringifyUrl({
         url: '',
-        query: params
+        query: {
+            pageNumber : params.pageNumber,
+            pageSize : params.pageSize,
+            searchTerm : params.searchTerm,
+            orderBy : params.orderBy,
+            filterBy : params.filterBy,
+            seller : params.auction.seller,
+            winner : params.auction.winner
+        }
     });
 
     // This is gonna be executed when the components first loads and then updates on state change.
