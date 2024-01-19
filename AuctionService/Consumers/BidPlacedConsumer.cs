@@ -18,7 +18,7 @@ public class BidPlacedConsumer : IConsumer<BidPlaced>
     {
         var message = context.Message;
 
-        if (Guid.TryParse(message.AuctionId, out var auctionId))
+        if (!Guid.TryParse(message.AuctionId, out var auctionId))
         {
             throw new ArgumentException(nameof(message.AuctionId));
         }
