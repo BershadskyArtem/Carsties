@@ -4,6 +4,7 @@ using MassTransit;
 using AuctionService.Data;
 using AuctionService.Data.Abstractions;
 using AuctionService.Data.Implementations;
+using AuctionService.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -12,6 +13,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddScoped<IAuctionRepository, AuctionRepository>();
+
+builder.Services.AddGrpc().AddServiceOptions<GrpcAuctionService>(options =>
+{
+    options.EnableDetailedErrors = true;
+});
 
 builder.Services.AddDbContext<AuctionDbContext>((isp, config) =>
 {
@@ -62,6 +68,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapGrpcService<GrpcAuctionService>();
 
 try
 {
